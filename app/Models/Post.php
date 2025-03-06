@@ -21,12 +21,18 @@ class Post extends Model
         'content',
         'featured_image',
         'status',
-        'published_at'
+        'user_id',
+        'categorie_id',
+        'published_at',
     ];
 
     protected $casts = [
-        'published_at' => 'datetime'
+        'published_at' => 'datetime',
     ];
+
+    public $incrementing = false;
+    protected $keyType = 'string';
+
 
     public function user(): BelongsTo
     {
