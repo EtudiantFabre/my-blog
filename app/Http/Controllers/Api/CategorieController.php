@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategorieRequest;
+use App\Http\Resources\CategorieResource;
 use App\Models\Categorie;
 use Illuminate\Http\Request;
 
@@ -13,15 +15,17 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        //
+        return CategorieResource::collection(Categorie::all());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategorieRequest $request)
     {
-        //
+        $categorie = Categorie::create($request->validated());
+
+        return new CategorieResource($categorie);
     }
 
     /**
@@ -29,15 +33,17 @@ class CategorieController extends Controller
      */
     public function show(Categorie $categorie)
     {
-        //
+        return new CategorieResource($categorie);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Categorie $categorie)
+    public function update(CategorieRequest $request, Categorie $categorie)
     {
-        //
+        $categorie->update($request->validated());
+
+        return new CategorieResource($categorie);
     }
 
     /**
@@ -45,6 +51,8 @@ class CategorieController extends Controller
      */
     public function destroy(Categorie $categorie)
     {
-        //
+        $categorie->delete();
+
+        return response()->noContent();
     }
 }
