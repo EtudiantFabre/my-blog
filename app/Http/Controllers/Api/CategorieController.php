@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategorieRequest;
 use App\Http\Resources\CategorieResource;
 use App\Models\Categorie;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class CategorieController extends Controller
@@ -21,9 +22,15 @@ class CategorieController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CategorieRequest $request)
+    public function store(Request $request)
     {
-        $categorie = Categorie::create($request->validated());
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $validated['slug'] = Str::slug($validated['name']);
+
+        $categorie = Categorie::create($validated);
 
         return new CategorieResource($categorie);
     }
